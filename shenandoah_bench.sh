@@ -5,6 +5,8 @@ echo "(Please be patient as the whole process takes about 30 minutes on a mobile
 
 mvn clean compile -q
 
+java --version
+
 # warm up
 for i in {1..10}
     do
