@@ -84,17 +84,17 @@ echo "Executing benchmark for Shenandoah GC mode"
 mkdir -p Shenandoah/qtable/{128,256,512}
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 128m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=qtable -Xlog:gc*:file=gc_qt.log -Xms128m -Xmx128m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=qtable -Xlog:gc*:file=gc_qt_128.log -Xms128m -Xmx128m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/qtable/128/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 256m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=qtable -Xlog:gc*:file=gc_qt.log -Xms256m -Xmx256m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=qtable -Xlog:gc*:file=gc_qt_256.log -Xms256m -Xmx256m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/qtable/256/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 512m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=qtable -Xlog:gc*:file=gc_qt.log -Xms512m -Xmx512m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=qtable -Xlog:gc*:file=gc_qt_512.log -Xms512m -Xmx512m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/qtable/512/
 
@@ -103,17 +103,17 @@ echo "Executing benchmark for Shenandoah GC mode"
 mkdir -p Shenandoah/adaptive/{128,256,512}
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 128m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=adaptive -Xlog:gc*:file=gc_ad.log -Xms128m -Xmx128m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=adaptive -Xlog:gc*:file=gc_ad_128.log -Xms128m -Xmx128m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/adaptive/128/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 256m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=adaptive -Xlog:gc*:file=gc_ad.log -Xms256m -Xmx256m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=adaptive -Xlog:gc*:file=gc_ad_256.log -Xms256m -Xmx256m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/adaptive/256/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 512m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=adaptive -Xlog:gc*:file=gc_ad.log -Xms512m -Xmx512m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=adaptive -Xlog:gc*:file=gc_ad_512.log -Xms512m -Xmx512m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/adaptive/512/
 
@@ -122,17 +122,17 @@ echo "Executing benchmark for Shenandoah GC mode"
 mkdir -p Shenandoah/compact/{128,256,512}
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 128m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -Xlog:gc*:file=gc_cp.log -Xms128m -Xmx128m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -Xlog:gc*:file=gc_cp_128.log -Xms128m -Xmx128m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/compact/128/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 256m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -Xlog:gc*:file=gc_cp.log -Xms256m -Xmx256m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -Xlog:gc*:file=gc_cp_256.log -Xms256m -Xmx256m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/compact/256/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 512m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -Xlog:gc*:file=gc_cp.log -Xms512m -Xmx512m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=compact -Xlog:gc*:file=gc_cp_512.log -Xms512m -Xmx512m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/compact/512/
 
@@ -141,17 +141,17 @@ echo "Executing benchmark for Shenandoah GC mode"
 mkdir -p Shenandoah/static/{128,256,512}
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 128m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=static -Xlog:gc*:file=gc_st.log -Xms128m -Xmx128m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=static -Xlog:gc*:file=gc_st_128.log -Xms128m -Xmx128m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/static/128/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 256m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=static -Xlog:gc*:file=gc_st.log -Xms256m -Xmx256m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=static -Xlog:gc*:file=gc_st_256.log -Xms256m -Xmx256m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/static/256/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 512m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=static -Xlog:gc*:file=gc_st.log -Xms512m -Xmx512m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=static -Xlog:gc*:file=gc_st_512.log -Xms512m -Xmx512m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/static/512/
 
@@ -160,17 +160,17 @@ echo "Executing benchmark for Shenandoah GC mode"
 mkdir -p Shenandoah/aggressive/{128,256,512}
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 128m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=aggressive -Xlog:gc*:file=gc_ag.log -Xms128m -Xmx128m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=aggressive -Xlog:gc*:file=gc_ag_128.log -Xms128m -Xmx128m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/aggressive/128/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 256m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=aggressive -Xlog:gc*:file=gc_ag.log -Xms256m -Xmx256m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=aggressive -Xlog:gc*:file=gc_ag_256.log -Xms256m -Xmx256m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/aggressive/256/
 
 echo "Executing benchmark for Shenandoah GC mode - heap size 512m"
-export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=aggressive -Xlog:gc*:file=gc_ag.log -Xms512m -Xmx512m"
+export MAVEN_OPTS="-XX:+UseShenandoahGC -XX:ShenandoahGCHeuristics=aggressive -Xlog:gc*:file=gc_ag_512.log -Xms512m -Xmx512m"
 mvn exec:java -Dexec.args="$allocs $step true" -q
 mv *.csv Shenandoah/aggressive/512/
 
