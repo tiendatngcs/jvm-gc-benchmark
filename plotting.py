@@ -1,16 +1,18 @@
 import numpy as np
+import math
 import pandas as pd
 import os
 import re
 from collections import defaultdict
 from matplotlib import pyplot as plt
+from numpy.core.arrayprint import printoptions
+from numpy.core.fromnumeric import mean
 
 
 def plot_avg_runtime():
     all_heap_sizes = ['128', '256', '512']
     all_benchmarks = ['SingleCoreFixedSize', 'SingleCoreVaryingSize', 'MultipleCoresFixedSize', 'MultipleCoresVaryingSize']
     heuristics = ['qtable', 'adaptive', 'static', 'compact', 'aggressive']
-
     avg_runtime_df = pd.DataFrame({'benchmarks': ['SingleCoreFixedSize', 'SingleCoreVaryingSize', 'MultipleCoresFixedSize', 'MultipleCoresVaryingSize']})
     # parse files
     result_dict_128 = defaultdict(list)
@@ -40,9 +42,9 @@ def plot_avg_runtime():
     plt.ylabel('Application Runtime in Milliseconds')
     plt.xlabel('Benchmarks')
     plt.xticks(np.arange(len(all_benchmarks)), ['SingleCoreFixedSize', 'SingleCoreVaryingSize', 'MultipleCoresFixedSize', 'MultipleCoresVaryingSize'])
-    plt.title('Runtime Average of Application with heapsize of 128')
+    plt.title('Runtime Average of Application with heapsize of 128 MB')
     figure.set_size_inches(12, 9)
-    plt.savefig('plot/Runtime Average 128.png')
+    plt.savefig('plot/Runtime Average 128 MB.png')
 
     for key in result_dict_256.keys():
         avg_runtime_df[key] = result_dict_256[key]
@@ -51,9 +53,9 @@ def plot_avg_runtime():
     plt.ylabel('Application Runtime in Milliseconds')
     plt.xlabel('Benchmarks')
     plt.xticks(np.arange(len(all_benchmarks)), ['SingleCoreFixedSize', 'SingleCoreVaryingSize', 'MultipleCoresFixedSize', 'MultipleCoresVaryingSize'])
-    plt.title('Runtime Average of Application with heapsize of 256')
+    plt.title('Runtime Average of Application with heapsize of 256 MB')
     figure.set_size_inches(12, 9)
-    plt.savefig('plot/Runtime Average 256.png')
+    plt.savefig('plot/Runtime Average 256 MB.png')
 
     for key in result_dict_512.keys():
         avg_runtime_df[key] = result_dict_512[key]
@@ -62,38 +64,67 @@ def plot_avg_runtime():
     plt.ylabel('Application Runtime in Milliseconds')
     plt.xlabel('Benchmarks')
     plt.xticks(np.arange(len(all_benchmarks)), ['SingleCoreFixedSize', 'SingleCoreVaryingSize', 'MultipleCoresFixedSize', 'MultipleCoresVaryingSize'])
-    plt.title('Runtime Average of Application with heapsize of 512')
+    plt.title('Runtime Average of Application with heapsize of 512 MB')
     figure.set_size_inches(12, 9)
-    plt.savefig('plot/Runtime Average 512.png')
-    # plt.show()
+    plt.savefig('plot/Runtime Average 512 MB.png')
+
+
+def plot_mem_helper(filename):
+    pattern = re.compile('^used')
+    results = defaultdict(list)
+    for file in os.listdir('log/'):
+        if file.startswith(filename):
+            mem = int(file[6:9])
+            with open(os.path.join('log/', file), 'r') as f:
+                for line in f:
+                    line = line.rstrip()
+                    for match in re.finditer(pattern, line):
+                        temp = line.split(' ')
+                        results[mem].append(int(temp[1]))
+    for key in results.keys():
+        results[key] = math.ceil(np.mean(results[key])) / 1000000 # round up to MB
+    return results
 
 
 def plot_mem_usage():
-    pattern1 = re.compile('^capacity')
-    pattern2 = re.compile('^used')
     heuristics = ['qtable', 'adaptive', 'static', 'compact', 'aggressive']
-    result = defaultdict(list)
+    qt_results = defaultdict(list)
+    ad_results = defaultdict(list)
+    ag_results = defaultdict(list)
+    cp_results = defaultdict(list)
+    st_results = defaultdict(list)
     for h in heuristics:
         if h == 'qtable':
-            for file in os.listdir('log/'):
-                if file.startswith("gc_ad"):
-                    with open(os.path.join('log/', file), 'r') as f:
-                        mem = 0
-                        for line in f:
-                            line = line.rstrip()
-                            for match in re.finditer(pattern1, line):
-                                temp = line.split(' ')
-                                if temp[0] == '5':
-                                    mem = 512
-                                elif temp[0] == '2':
-                                    mem = 256
-                                else:
-                                    mem = 128
+            qt_results = plot_mem_helper('gc_qt')
+        elif h == 'adaptive':
+            ad_results = plot_mem_helper('gc_ad')
+        elif h == 'static':
+            st_results = plot_mem_helper('gc_st')
+        elif h == 'compact':
+            cp_results = plot_mem_helper('gc_cp')
+        elif h == 'aggressive':
+            ag_results = plot_mem_helper('gc_ag')
 
-                            for match in re.finditer(pattern2, line):
-                                temp = line.split(' ')
-                                result[mem].append(temp[1])
-    print(result)
+    final_result = defaultdict(list)
+    sizes = [128, 256, 512]
+    for size in sizes:
+        final_result[size].append(qt_results[size])
+        final_result[size].append(ad_results[size])
+        final_result[size].append(st_results[size])
+        final_result[size].append(cp_results[size])
+        final_result[size].append(ag_results[size])
+    avg_mem_df = pd.DataFrame({'heuristic': ['qtable', 'adaptive', 'static', 'compact', 'aggressive']})
+    for key in final_result.keys():
+        avg_mem_df[key] = final_result[key]
+    print(avg_mem_df.head())
+    avg_mem_df.plot.bar(rot=0)
+    figure = plt.gcf()
+    plt.ylabel('Average Memory Usage of Application in MB')
+    plt.xlabel('Heap Sizes')
+    plt.xticks(np.arange(len(heuristics)), heuristics)
+    plt.title('Average Memory Usage of Applications')
+    figure.set_size_inches(12, 9)
+    plt.savefig('plot/Memory Usage Average.png')
 
 if __name__ == '__main__':
     # plot_avg_runtime()
