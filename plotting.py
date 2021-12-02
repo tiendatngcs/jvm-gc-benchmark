@@ -104,24 +104,25 @@ def plot_mem_usage():
             cp_results = plot_mem_helper('gc_cp')
         elif h == 'aggressive':
             ag_results = plot_mem_helper('gc_ag')
-
-    final_result = defaultdict(list)
-    sizes = [128, 256, 512]
-    for size in sizes:
-        final_result[size].append(qt_results[size])
-        final_result[size].append(ad_results[size])
-        final_result[size].append(st_results[size])
-        final_result[size].append(cp_results[size])
-        final_result[size].append(ag_results[size])
-    avg_mem_df = pd.DataFrame({'heuristic': ['qtable', 'adaptive', 'static', 'compact', 'aggressive']})
-    for key in final_result.keys():
-        avg_mem_df[key] = final_result[key]
+    
+    avg_mem_df = pd.DataFrame({'sizes': ['128', '256', '512']})
+    for h in heuristics:
+        if h == 'qtable':
+            avg_mem_df[h] = qt_results.values()
+        elif h == 'adaptive':
+            avg_mem_df[h] = ad_results.values()
+        elif h == 'static':
+            avg_mem_df[h] = st_results.values()
+        elif h == 'compact':
+            avg_mem_df[h] = cp_results.values()
+        elif h == 'aggressive':
+            avg_mem_df[h] = ag_results.values()
     print(avg_mem_df.head())
     avg_mem_df.plot.bar(rot=0)
     figure = plt.gcf()
     plt.ylabel('Average Memory Usage of Application in MB')
     plt.xlabel('Heap Sizes')
-    plt.xticks(np.arange(len(heuristics)), heuristics)
+    plt.xticks(np.arange(3), ['128', '256', '512'])
     plt.title('Average Memory Usage of Applications')
     figure.set_size_inches(12, 9)
     plt.savefig('plot/Memory Usage Average.png')
